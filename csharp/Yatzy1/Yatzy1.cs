@@ -1,11 +1,26 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Yatzy1
 {
-    public class Yatzy1
+    public class YatzyCategoryScorer1
     {
-        public static int Chance(int d1, int d2, int d3, int d4, int d5)
+        private List<int> _dice = [];
+
+        public YatzyCategoryScorer1 SetDice(List<int> dice)
+        {
+            if (dice is not { Count: 5 })
+            {
+                throw new Exception("just play with five dice");
+            }
+            
+            _dice = dice;
+            
+            return this;
+        }
+        
+        public int Chance(int d1, int d2, int d3, int d4, int d5)
         {
             var total = 0;
             total += d1;
@@ -15,7 +30,7 @@ namespace Yatzy1
             total += d5;
             return total;
         }
-        public static int yatzy(params int[] dice)
+        public int yatzy(params int[] dice)
         {
             var counts = new int[6];
             foreach (var die in dice)
@@ -26,36 +41,36 @@ namespace Yatzy1
             return 0;
         }
 
-        private static int Ns(int n, List<int> dice)
+        private int Ns(int n, List<int> dice)
         {
             return dice.Where(die => die == n).Sum();
         }
         
-        public static int Ones(List<int> dice)
+        public int Ones()
         {
-            return Ns(1, dice);
+            return Ns(1, _dice);
         }
         
-        public static int Twos(List<int> dice)
+        public int Twos()
         {
-            return Ns(2, dice);
+            return Ns(2, _dice);
         }
-        public static int Threes(List<int> dice)
+        public int Threes()
         {
-            return Ns(3, dice);
+            return Ns(3, _dice);
         }
         
-        public static int Fours(List<int> dice)
+        public int Fours()
         {
-            return Ns(4, dice);
+            return Ns(4, _dice);
         }
-        public static int Fives(List<int> dice)
+        public int Fives()
         {
-            return Ns(5, dice);
+            return Ns(5, _dice);
         }
-        public static int Sixes(List<int> dice)
+        public int Sixes()
         {
-            return Ns(6, dice);
+            return Ns(6, _dice);
         }
         
         public int ScorePair(int d1, int d2, int d3, int d4, int d5)
@@ -72,7 +87,7 @@ namespace Yatzy1
                     return (6 - at) * 2;
             return 0;
         }
-        public static int TwoPair(int d1, int d2, int d3, int d4, int d5)
+        public int TwoPair(int d1, int d2, int d3, int d4, int d5)
         {
             var counts = new int[6];
             counts[d1 - 1]++;
@@ -93,7 +108,7 @@ namespace Yatzy1
                 return score * 2;
             return 0;
         }
-        public static int FourOfAKind(int _1, int _2, int d3, int d4, int d5)
+        public int FourOfAKind(int _1, int _2, int d3, int d4, int d5)
         {
             int[] tallies;
             tallies = new int[6];
@@ -107,7 +122,7 @@ namespace Yatzy1
                     return (i + 1) * 4;
             return 0;
         }
-        public static int ThreeOfAKind(int d1, int d2, int d3, int d4, int d5)
+        public int ThreeOfAKind(int d1, int d2, int d3, int d4, int d5)
         {
             int[] t;
             t = new int[6];
@@ -122,7 +137,7 @@ namespace Yatzy1
             return 0;
         }
         
-        public static int SmallStraight(int d1, int d2, int d3, int d4, int d5)
+        public int SmallStraight(int d1, int d2, int d3, int d4, int d5)
         {
             int[] tallies;
             tallies = new int[6];
@@ -139,7 +154,7 @@ namespace Yatzy1
                 return 15;
             return 0;
         }
-        public static int LargeStraight(int d1, int d2, int d3, int d4, int d5)
+        public int LargeStraight(int d1, int d2, int d3, int d4, int d5)
         {
             int[] tallies;
             tallies = new int[6];
@@ -156,7 +171,7 @@ namespace Yatzy1
                 return 20;
             return 0;
         }
-        public static int FullHouse(int d1, int d2, int d3, int d4, int d5)
+        public int FullHouse(int d1, int d2, int d3, int d4, int d5)
         {
             int[] tallies;
             var _2 = false;
