@@ -171,8 +171,7 @@ public class YatzyCategoryScorer1
            .Where( x => 
                         x.First.Key != x.Second.Key &&
                         (
-                            x.First.Value == 2 && x.Second.Value == 3 ||
-                            x.First.Value == 3 && x.Second.Value == 2
+                            x.First.Value == 2 && x.Second.Value == 3
                         ))
            .Select(x => x.First.Key * x.First.Value + x.Second.Key * x.Second.Value)
            .FirstOrDefault();
