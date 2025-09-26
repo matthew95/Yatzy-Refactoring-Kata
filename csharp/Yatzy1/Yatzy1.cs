@@ -2,209 +2,179 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Yatzy1
+namespace Yatzy1;
+public class YatzyCategoryScorer1
 {
-    public class YatzyCategoryScorer1
+    private List<int> _dice = [];
+
+    public YatzyCategoryScorer1 SetDice(List<int> dice)
     {
-        private List<int> _dice = [];
-
-        public YatzyCategoryScorer1 SetDice(List<int> dice)
+        if (dice is not { Count: 5 })
         {
-            if (dice is not { Count: 5 })
+            throw new Exception("just play with five dice");
+        }
+        
+        _dice = dice;
+        
+        return this;
+    }
+    
+    public int Chance(int d1, int d2, int d3, int d4, int d5)
+    {
+        var total = 0;
+        total += d1;
+        total += d2;
+        total += d3;
+        total += d4;
+        total += d5;
+        return total;
+    }
+    public int yatzy(params int[] dice)
+    {
+        var counts = new int[6];
+        foreach (var die in dice)
+            counts[die - 1]++;
+        for (var i = 0; i != 6; i++)
+            if (counts[i] == 5)
+                return 50;
+        return 0;
+    }
+
+    private static int Ns(int n, List<int> dice)
+    {
+        return dice.Where(die => die == n).Sum();
+    }
+
+    private static int NOfKind(int n, List<int> dice)
+    {
+        return KindCount(dice)
+            .Where(item => item.Value >= n) // where item occurs at least n times
+            .OrderByDescending(item => item.Key)
+            .Select(item => item.Key)
+            .FirstOrDefault() * n;
+    }
+
+    private static Dictionary<int, int> KindCount(List<int> dice)
+    {
+        Dictionary<int, int> dict = new();
+        for (var i = 1; i <= 6; i++)
+        {
+            dict[i] = 0;
+        }
+
+        dice.ForEach(d => dict[d]++);
+        return dict;
+    }
+    
+    private static int Straight(List<int> dice)
+    {
+        var diceCopy = new List<int>(dice);
+        diceCopy.Sort();
+        
+        List<int> smallStraight = [1, 2, 3, 4, 5];
+        List<int> largeStraight = [2, 3, 4, 5, 6];
+        
+        if (diceCopy.SequenceEqual(smallStraight) || 
+            diceCopy.SequenceEqual(largeStraight))
+        {
+            return diceCopy.Sum();
+        }
+
+        return 0;
+    }
+    
+    public int Ones()
+    {
+        return Ns(1, _dice);
+    }
+    
+    public int Twos()
+    {
+        return Ns(2, _dice);
+    }
+    public int Threes()
+    {
+        return Ns(3, _dice);
+    }
+    
+    public int Fours()
+    {
+        return Ns(4, _dice);
+    }
+    public int Fives()
+    {
+        return Ns(5, _dice);
+    }
+    public int Sixes()
+    {
+        return Ns(6, _dice);
+    }
+    
+    public int ScorePair(int d1, int d2, int d3, int d4, int d5)
+    {
+        var counts = new int[6];
+        counts[d1 - 1]++;
+        counts[d2 - 1]++;
+        counts[d3 - 1]++;
+        counts[d4 - 1]++;
+        counts[d5 - 1]++;
+        int at;
+        for (at = 0; at != 6; at++)
+            if (counts[6 - at - 1] >= 2)
+                return (6 - at) * 2;
+        return 0;
+    }
+    public int TwoPair(int d1, int d2, int d3, int d4, int d5)
+    {
+        var counts = new int[6];
+        counts[d1 - 1]++;
+        counts[d2 - 1]++;
+        counts[d3 - 1]++;
+        counts[d4 - 1]++;
+        counts[d5 - 1]++;
+        var n = 0;
+        var score = 0;
+        for (var i = 0; i < 6; i += 1)
+            if (counts[6 - i - 1] >= 2)
             {
-                throw new Exception("just play with five dice");
+                n++;
+                score += 6 - i;
             }
-            
-            _dice = dice;
-            
-            return this;
-        }
-        
-        public int Chance(int d1, int d2, int d3, int d4, int d5)
-        {
-            var total = 0;
-            total += d1;
-            total += d2;
-            total += d3;
-            total += d4;
-            total += d5;
-            return total;
-        }
-        public int yatzy(params int[] dice)
-        {
-            var counts = new int[6];
-            foreach (var die in dice)
-                counts[die - 1]++;
-            for (var i = 0; i != 6; i++)
-                if (counts[i] == 5)
-                    return 50;
-            return 0;
-        }
 
-        private int Ns(int n, List<int> dice)
-        {
-            return dice.Where(die => die == n).Sum();
-        }
-        
-        public int Ones()
-        {
-            return Ns(1, _dice);
-        }
-        
-        public int Twos()
-        {
-            return Ns(2, _dice);
-        }
-        public int Threes()
-        {
-            return Ns(3, _dice);
-        }
-        
-        public int Fours()
-        {
-            return Ns(4, _dice);
-        }
-        public int Fives()
-        {
-            return Ns(5, _dice);
-        }
-        public int Sixes()
-        {
-            return Ns(6, _dice);
-        }
-        
-        public int ScorePair(int d1, int d2, int d3, int d4, int d5)
-        {
-            var counts = new int[6];
-            counts[d1 - 1]++;
-            counts[d2 - 1]++;
-            counts[d3 - 1]++;
-            counts[d4 - 1]++;
-            counts[d5 - 1]++;
-            int at;
-            for (at = 0; at != 6; at++)
-                if (counts[6 - at - 1] >= 2)
-                    return (6 - at) * 2;
-            return 0;
-        }
-        public int TwoPair(int d1, int d2, int d3, int d4, int d5)
-        {
-            var counts = new int[6];
-            counts[d1 - 1]++;
-            counts[d2 - 1]++;
-            counts[d3 - 1]++;
-            counts[d4 - 1]++;
-            counts[d5 - 1]++;
-            var n = 0;
-            var score = 0;
-            for (var i = 0; i < 6; i += 1)
-                if (counts[6 - i - 1] >= 2)
-                {
-                    n++;
-                    score += 6 - i;
-                }
-
-            if (n == 2)
-                return score * 2;
-            return 0;
-        }
-        public int FourOfAKind(int _1, int _2, int d3, int d4, int d5)
-        {
-            int[] tallies;
-            tallies = new int[6];
-            tallies[_1 - 1]++;
-            tallies[_2 - 1]++;
-            tallies[d3 - 1]++;
-            tallies[d4 - 1]++;
-            tallies[d5 - 1]++;
-            for (var i = 0; i < 6; i++)
-                if (tallies[i] >= 4)
-                    return (i + 1) * 4;
-            return 0;
-        }
-        public int ThreeOfAKind(int d1, int d2, int d3, int d4, int d5)
-        {
-            int[] t;
-            t = new int[6];
-            t[d1 - 1]++;
-            t[d2 - 1]++;
-            t[d3 - 1]++;
-            t[d4 - 1]++;
-            t[d5 - 1]++;
-            for (var i = 0; i < 6; i++)
-                if (t[i] >= 3)
-                    return (i + 1) * 3;
-            return 0;
-        }
-        
-        public int SmallStraight(int d1, int d2, int d3, int d4, int d5)
-        {
-            int[] tallies;
-            tallies = new int[6];
-            tallies[d1 - 1] += 1;
-            tallies[d2 - 1] += 1;
-            tallies[d3 - 1] += 1;
-            tallies[d4 - 1] += 1;
-            tallies[d5 - 1] += 1;
-            if (tallies[0] == 1 &&
-                tallies[1] == 1 &&
-                tallies[2] == 1 &&
-                tallies[3] == 1 &&
-                tallies[4] == 1)
-                return 15;
-            return 0;
-        }
-        public int LargeStraight(int d1, int d2, int d3, int d4, int d5)
-        {
-            int[] tallies;
-            tallies = new int[6];
-            tallies[d1 - 1] += 1;
-            tallies[d2 - 1] += 1;
-            tallies[d3 - 1] += 1;
-            tallies[d4 - 1] += 1;
-            tallies[d5 - 1] += 1;
-            if (tallies[1] == 1 &&
-                tallies[2] == 1 &&
-                tallies[3] == 1 &&
-                tallies[4] == 1
-                && tallies[5] == 1)
-                return 20;
-            return 0;
-        }
-        public int FullHouse(int d1, int d2, int d3, int d4, int d5)
-        {
-            int[] tallies;
-            var _2 = false;
-            int i;
-            var _2_at = 0;
-            var _3 = false;
-            var _3_at = 0;
-
-
-            tallies = new int[6];
-            tallies[d1 - 1] += 1;
-            tallies[d2 - 1] += 1;
-            tallies[d3 - 1] += 1;
-            tallies[d4 - 1] += 1;
-            tallies[d5 - 1] += 1;
-
-            for (i = 0; i != 6; i += 1)
-                if (tallies[i] == 2)
-                {
-                    _2 = true;
-                    _2_at = i + 1;
-                }
-
-            for (i = 0; i != 6; i += 1)
-                if (tallies[i] == 3)
-                {
-                    _3 = true;
-                    _3_at = i + 1;
-                }
-
-            if (_2 && _3)
-                return _2_at * 2 + _3_at * 3;
-            return 0;
-        }
+        if (n == 2)
+            return score * 2;
+        return 0;
+    }
+    public int FourOfAKind()
+    {
+        return NOfKind(4, _dice);
+    }
+    
+    public int ThreeOfAKind()
+    {
+        return NOfKind(3, _dice);
+    }
+    
+    public int SmallStraight()
+    {
+        return Straight(_dice);
+    }
+    
+    public int LargeStraight()
+    {
+        return Straight(_dice);
+    }
+    public int FullHouse()
+    {
+       return KindCount(_dice)// create cartesian product with select many so that we can filter pairs where the kindcounts are 2 and 3.
+           .SelectMany(x => KindCount(_dice), (first, second) => new { First = first, Second = second})
+           .Where( x => 
+                        x.First.Key != x.Second.Key &&
+                        (
+                            x.First.Value == 2 && x.Second.Value == 3 ||
+                            x.First.Value == 3 && x.Second.Value == 2
+                        ))
+           .Select(x => x.First.Key * x.First.Value + x.Second.Key * x.Second.Value)
+           .FirstOrDefault();
     }
 }
