@@ -12,18 +12,15 @@ namespace Yatzy.Test
         }
         
         [Fact]
-        public void Chance_scores_sum_of_all_dice()
+        public void Fact_Chance()
         {
-            var expected = 15;
-            var actual = CategoryScorer().Chance(2, 3, 4, 5, 1);
-            Assert.Equal(expected, actual);
+            Assert.Equal(15, CategoryScorer().Chance(2, 3, 4, 5, 1));
             Assert.Equal(16, CategoryScorer().Chance(3, 3, 4, 5, 1));
         }
 
         [Fact]
         public void Fact_Ones()
         {
-            // 
             Assert.Equal(1, CategoryScorer().SetDice([1, 2, 3, 4, 5]).Ones());
             Assert.Equal(2, CategoryScorer().SetDice([1, 2, 1, 4, 5]).Ones());
             Assert.Equal(0, CategoryScorer().SetDice([6, 2, 2, 4, 5]).Ones());
