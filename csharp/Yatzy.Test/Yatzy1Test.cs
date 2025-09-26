@@ -24,25 +24,41 @@ namespace Yatzy.Test
         }
 
         [Fact]
-        public void Fact_2s()
+        public void Fact_Twos()
         {
-            Assert.Equal(4, Twos(1, 2, 3, 2, 6));
-            Assert.Equal(10, Twos(2, 2, 2, 2, 2));
+            Assert.Equal(4, Twos([1, 2, 3, 2, 6]));
+            Assert.Equal(10, Twos([2, 2, 2, 2, 2]));
         }
 
         [Fact]
-        public void Fact_threes()
+        public void Fact_Threes()
         {
-            Assert.Equal(6, Threes(1, 2, 3, 2, 3));
-            Assert.Equal(12, Threes(2, 3, 3, 3, 3));
+            Assert.Equal(6, Threes([1, 2, 3, 2, 3]));
+            Assert.Equal(12, Threes([2, 3, 3, 3, 3]));
+        }
+        
+        [Fact]
+        public void Fact_Fours()
+        {
+            Assert.Equal(12, Fours([4, 4, 4, 5, 5]));
+            Assert.Equal(8, Fours([4, 4, 5, 5, 5]));
+            Assert.Equal(4, Fours([4, 5, 5, 5, 5]));
         }
 
         [Fact]
-        public void fives()
+        public void Fact_Fives()
         {
-            Assert.Equal(10, new Yatzy1.Yatzy1(4, 4, 4, 5, 5).Fives());
-            Assert.Equal(15, new Yatzy1.Yatzy1(4, 4, 5, 5, 5).Fives());
-            Assert.Equal(20, new Yatzy1.Yatzy1(4, 5, 5, 5, 5).Fives());
+            Assert.Equal(10, Fives([4, 4, 4, 5, 5]));
+            Assert.Equal(15, Fives([4, 4, 5, 5, 5]));
+            Assert.Equal(20, Fives([4, 5, 5, 5, 5]));
+        }
+        
+        [Fact]
+        public void Fact_Sixes()
+        {
+            Assert.Equal(0, Sixes([4, 4, 4, 5, 5]));
+            Assert.Equal(6, Sixes([4, 4, 6, 5, 5]));
+            Assert.Equal(18, Sixes([6, 5, 6, 6, 5]));
         }
 
         [Fact]
@@ -51,14 +67,6 @@ namespace Yatzy.Test
             Assert.Equal(12, FourOfAKind(3, 3, 3, 3, 5));
             Assert.Equal(20, FourOfAKind(5, 5, 5, 4, 5));
             Assert.Equal(12, FourOfAKind(3, 3, 3, 3, 3));
-        }
-
-        [Fact]
-        public void fours_Fact()
-        {
-            Assert.Equal(12, new Yatzy1.Yatzy1(4, 4, 4, 5, 5).Fours());
-            Assert.Equal(8, new Yatzy1.Yatzy1(4, 4, 5, 5, 5).Fours());
-            Assert.Equal(4, new Yatzy1.Yatzy1(4, 5, 5, 5, 5).Fours());
         }
 
         [Fact]
@@ -84,13 +92,7 @@ namespace Yatzy.Test
             Assert.Equal(12, new Yatzy1.Yatzy1().ScorePair(5, 3, 6, 6, 5));
         }
 
-        [Fact]
-        public void sixes_Fact()
-        {
-            Assert.Equal(0, new Yatzy1.Yatzy1(4, 4, 4, 5, 5).sixes());
-            Assert.Equal(6, new Yatzy1.Yatzy1(4, 4, 6, 5, 5).sixes());
-            Assert.Equal(18, new Yatzy1.Yatzy1(6, 5, 6, 6, 5).sixes());
-        }
+        
 
         [Fact]
         public void smallStraight()

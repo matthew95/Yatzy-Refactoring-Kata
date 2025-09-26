@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Yatzy1
 {
     public class Yatzy1
@@ -22,77 +25,39 @@ namespace Yatzy1
                     return 50;
             return 0;
         }
-        public static int Ones(int d1, int d2, int d3, int d4, int d5)
-        {
-            var sum = 0;
-            if (d1 == 1) sum++;
-            if (d2 == 1) sum++;
-            if (d3 == 1) sum++;
-            if (d4 == 1) sum++;
-            if (d5 == 1)
-                sum++;
 
-            return sum;
-        }
-        public static int Twos(int d1, int d2, int d3, int d4, int d5)
+        private static int Ns(int n, List<int> dice)
         {
-            var sum = 0;
-            if (d1 == 2) sum += 2;
-            if (d2 == 2) sum += 2;
-            if (d3 == 2) sum += 2;
-            if (d4 == 2) sum += 2;
-            if (d5 == 2) sum += 2;
-            return sum;
+            return dice.Where(die => die == n).Sum();
         }
-        public static int Threes(int d1, int d2, int d3, int d4, int d5)
+        
+        public static int Ones(List<int> dice)
         {
-            int s;
-            s = 0;
-            if (d1 == 3) s += 3;
-            if (d2 == 3) s += 3;
-            if (d3 == 3) s += 3;
-            if (d4 == 3) s += 3;
-            if (d5 == 3) s += 3;
-            return s;
+            return Ns(1, dice);
         }
-
-        protected int[] dice;
-        public Yatzy1() {}
-        public Yatzy1(int d1, int d2, int d3, int d4, int _5)
+        
+        public static int Twos(List<int> dice)
         {
-            dice = new int[5];
-            dice[0] = d1;
-            dice[1] = d2;
-            dice[2] = d3;
-            dice[3] = d4;
-            dice[4] = _5;
+            return Ns(2, dice);
         }
-        public int Fours()
+        public static int Threes(List<int> dice)
         {
-            int sum;
-            sum = 0;
-            for (var at = 0; at != 5; at++)
-                if (dice[at] == 4)
-                    sum += 4;
-            return sum;
+            return Ns(3, dice);
         }
-        public int Fives()
+        
+        public static int Fours(List<int> dice)
         {
-            var s = 0;
-            int i;
-            for (i = 0; i < dice.Length; i++)
-                if (dice[i] == 5)
-                    s = s + 5;
-            return s;
+            return Ns(4, dice);
         }
-        public int sixes()
+        public static int Fives(List<int> dice)
         {
-            var sum = 0;
-            for (var at = 0; at < dice.Length; at++)
-                if (dice[at] == 6)
-                    sum = sum + 6;
-            return sum;
+            return Ns(5, dice);
         }
+        public static int Sixes(List<int> dice)
+        {
+            return Ns(6, dice);
+        }
+        
         public int ScorePair(int d1, int d2, int d3, int d4, int d5)
         {
             var counts = new int[6];
